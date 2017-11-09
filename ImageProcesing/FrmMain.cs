@@ -15,7 +15,12 @@ namespace ImageProcesing
     {
         // CONVOLUTION ARRAY
         const int CONV_SIZE = 3;
+        private int[] CONV_SHARP = { 0, -1, 0, -1, 5, -1, 0, -1, 0};
+        // Save image in Input image
         private Bitmap imageInput = null;
+        private Bitmap imageOutput = null;
+
+
 
         public FrmMain()
         {
@@ -31,7 +36,7 @@ namespace ImageProcesing
             // open file dialog   
             OpenFileDialog open = new OpenFileDialog();
             // image filters  
-            open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp, *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
+            open.Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp, *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
             if (open.ShowDialog() == DialogResult.OK)
             {
                 // display image in picture box  
@@ -39,6 +44,7 @@ namespace ImageProcesing
                 // 
                 imageInput = bmp;
                 picInput.Image = bmp;
+                // Get image info
             }
             else
             {
@@ -51,7 +57,7 @@ namespace ImageProcesing
         //   x, y : point (x,y)
         //   size : convolution size
         //</sumary>
-        private Color GetAvg(LockBitmap lbm, int x, int y, int size)
+        private Color GetAvg(LockBitmap lbm, int x, int y, int size = 3)
         {
             if(size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
             int sumR = 0, sumG = 0, sumB = 0, sumA = 0;
@@ -76,7 +82,7 @@ namespace ImageProcesing
             return (lbm.Depth == 32 ? Color.FromArgb(sumA, sumR, sumG, sumB) : Color.FromArgb(sumR, sumG, sumB));
         }
 
-        private Color GetMedian(LockBitmap lbm, int x, int y, int size)
+        private Color GetMedian(LockBitmap lbm, int x, int y, int size = 3)
         {
             List<byte> rColor = new List<byte>();
             List<byte> gColor = new List<byte>();
@@ -109,14 +115,43 @@ namespace ImageProcesing
             return (lbm.Depth == 32 ? Color.FromArgb(aColor[mid], rColor[mid], gColor[mid], bColor[mid]) : Color.FromArgb(rColor[mid], gColor[mid], bColor[mid]));
         }
 
+        private Color GetSharp(LockBitmap lbm, int x, int y, int size = 3)
+        {
+            if (size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
+            // index of CONV_SHARP matrix
+            int index = 0;
+            int R = 0, G = 0, B = 0, A = 0;
+            for (int i = x - size / 2; i <= x + size / 2; i++)
+            {
+                for (int j = y - size / 2; j <= y + size / 2; j++)
+                {
+                    if (i >= 0 && j >= 0 && i < lbm.Width && j < lbm.Height)
+                    {
+                        A += (int)lbm.GetPixel(i, j).A * CONV_SHARP[index];
+                        R += (int)lbm.GetPixel(i, j).R * CONV_SHARP[index];
+                        G += (int)lbm.GetPixel(i, j).G * CONV_SHARP[index];
+                        B += (int)lbm.GetPixel(i, j).B * CONV_SHARP[index];
+                    }
+                    index++;
+                }
+            }
+
+            A = (A < 0 ? 0 : (A > 255 ? 255 : A));
+            R = (R < 0 ? 0 : (R > 255 ? 255 : R));
+            G = (G < 0 ? 0 : (G > 255 ? 255 : G));
+            B = (B < 0 ? 0 : (B > 255 ? 255 : B));
+
+            return (lbm.Depth == 32 ? Color.FromArgb(A, R, G, B) : Color.FromArgb(R, G, B));
+        }
+
         private Bitmap GetResult(Bitmap bmp, int type)
         {
-            Bitmap bitmapOut = new Bitmap(imageInput.Width, imageInput.Height, imageInput.PixelFormat);
+            imageOutput = new Bitmap(imageInput.Width, imageInput.Height, imageInput.PixelFormat);
 
             LockBitmap lockBitmapIn = new LockBitmap(imageInput);
             lockBitmapIn.LockBits();
 
-            LockBitmap lockBitmapOut = new LockBitmap(bitmapOut);
+            LockBitmap lockBitmapOut = new LockBitmap(imageOutput);
             lockBitmapOut.LockBits();
 
             int width = lockBitmapIn.Width;
@@ -142,6 +177,15 @@ namespace ImageProcesing
                         }
                     }
                     break;
+                case 3:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetSharp(lockBitmapIn, i, j, CONV_SIZE));
+                        }
+                    }
+                    break;
                 default:
                     MessageBox.Show("Selection filter option, pls!", "Oops!!!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     lockBitmapIn.UnlockBits();
@@ -151,7 +195,7 @@ namespace ImageProcesing
             lockBitmapIn.UnlockBits();
             lockBitmapOut.UnlockBits();
 
-            return bitmapOut;
+            return imageOutput;
         }
 
 
@@ -168,6 +212,40 @@ namespace ImageProcesing
         private void FrmMain_Load(object sender, EventArgs e)
         {
             cmbType.SelectedIndex = 0;
+        }
+
+        private void picInput_MouseHover(object sender, EventArgs e)
+        {
+            if (imageInput != null)
+            {
+                string s = "Display size: " + picInput.Width + " x " + picInput.Height +
+                "\nBit depth: " + imageInput.PixelFormat +
+                "\nDimensions: " + imageInput.Width + " x " + imageInput.Height +
+                "\nBit depth: " + Bitmap.GetPixelFormatSize(imageInput.PixelFormat);
+                ttImageInfo.Show(s, picInput);
+            }
+                 
+        }
+
+        private void menu1_Click(object sender, EventArgs e)
+        {
+            if(picOutput.Image != null)
+            {
+                try
+                {
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.DefaultExt = "jpg";
+                    sfd.Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp, *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png|All files (*.*)|*.*";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        imageOutput.Save(sfd.FileName);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 }

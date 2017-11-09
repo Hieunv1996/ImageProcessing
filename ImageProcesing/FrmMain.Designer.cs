@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupPanel3 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.btnOK = new DevComponents.DotNetBar.ButtonX();
@@ -37,17 +38,21 @@
             this.cmbItemMedian = new DevComponents.Editors.ComboItem();
             this.cmbItemSharp = new DevComponents.Editors.ComboItem();
             this.btnBrowser = new DevComponents.DotNetBar.ButtonX();
-            this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.groupPanel4 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.picOutput = new System.Windows.Forms.PictureBox();
             this.groupPanel2 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.picInput = new System.Windows.Forms.PictureBox();
+            this.groupPanel4 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.picOutput = new System.Windows.Forms.PictureBox();
+            this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.ttImageInfo = new System.Windows.Forms.ToolTip(this.components);
+            this.menuPicOut = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menu1 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupPanel3.SuspendLayout();
-            this.groupPanel1.SuspendLayout();
-            this.groupPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picOutput)).BeginInit();
             this.groupPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picInput)).BeginInit();
+            this.groupPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picOutput)).BeginInit();
+            this.groupPanel1.SuspendLayout();
+            this.menuPicOut.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupPanel3
@@ -162,97 +167,6 @@
             this.btnBrowser.Text = "Choose Image";
             this.btnBrowser.Click += new System.EventHandler(this.btnBrowser_Click);
             // 
-            // groupPanel1
-            // 
-            this.groupPanel1.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel1.Controls.Add(this.groupPanel4);
-            this.groupPanel1.Controls.Add(this.groupPanel2);
-            this.groupPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupPanel1.Location = new System.Drawing.Point(0, 0);
-            this.groupPanel1.Name = "groupPanel1";
-            this.groupPanel1.Size = new System.Drawing.Size(1105, 478);
-            // 
-            // 
-            // 
-            this.groupPanel1.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel1.Style.BackColorGradientAngle = 90;
-            this.groupPanel1.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel1.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel1.Style.BorderBottomWidth = 1;
-            this.groupPanel1.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel1.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel1.Style.BorderLeftWidth = 1;
-            this.groupPanel1.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel1.Style.BorderRightWidth = 1;
-            this.groupPanel1.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel1.Style.BorderTopWidth = 1;
-            this.groupPanel1.Style.CornerDiameter = 4;
-            this.groupPanel1.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel1.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.groupPanel1.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel1.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel1.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel1.TabIndex = 3;
-            // 
-            // groupPanel4
-            // 
-            this.groupPanel4.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel4.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel4.Controls.Add(this.picOutput);
-            this.groupPanel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupPanel4.Location = new System.Drawing.Point(573, 0);
-            this.groupPanel4.Name = "groupPanel4";
-            this.groupPanel4.Size = new System.Drawing.Size(526, 472);
-            // 
-            // 
-            // 
-            this.groupPanel4.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel4.Style.BackColorGradientAngle = 90;
-            this.groupPanel4.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel4.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel4.Style.BorderBottomWidth = 1;
-            this.groupPanel4.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel4.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel4.Style.BorderLeftWidth = 1;
-            this.groupPanel4.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel4.Style.BorderRightWidth = 1;
-            this.groupPanel4.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel4.Style.BorderTopWidth = 1;
-            this.groupPanel4.Style.CornerDiameter = 4;
-            this.groupPanel4.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel4.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
-            this.groupPanel4.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel4.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel4.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel4.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel4.TabIndex = 2;
-            this.groupPanel4.Text = "Output Image";
-            // 
-            // picOutput
-            // 
-            this.picOutput.BackColor = System.Drawing.Color.Transparent;
-            this.picOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picOutput.Location = new System.Drawing.Point(0, 0);
-            this.picOutput.Name = "picOutput";
-            this.picOutput.Size = new System.Drawing.Size(520, 451);
-            this.picOutput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picOutput.TabIndex = 0;
-            this.picOutput.TabStop = false;
-            // 
             // groupPanel2
             // 
             this.groupPanel2.CanvasColor = System.Drawing.SystemColors.Control;
@@ -303,6 +217,114 @@
             this.picInput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picInput.TabIndex = 0;
             this.picInput.TabStop = false;
+            this.picInput.MouseHover += new System.EventHandler(this.picInput_MouseHover);
+            // 
+            // groupPanel4
+            // 
+            this.groupPanel4.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel4.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel4.Controls.Add(this.picOutput);
+            this.groupPanel4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.groupPanel4.Location = new System.Drawing.Point(573, 0);
+            this.groupPanel4.Name = "groupPanel4";
+            this.groupPanel4.Size = new System.Drawing.Size(526, 472);
+            // 
+            // 
+            // 
+            this.groupPanel4.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel4.Style.BackColorGradientAngle = 90;
+            this.groupPanel4.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel4.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderBottomWidth = 1;
+            this.groupPanel4.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel4.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderLeftWidth = 1;
+            this.groupPanel4.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderRightWidth = 1;
+            this.groupPanel4.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderTopWidth = 1;
+            this.groupPanel4.Style.CornerDiameter = 4;
+            this.groupPanel4.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel4.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
+            this.groupPanel4.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel4.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel4.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel4.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel4.TabIndex = 2;
+            this.groupPanel4.Text = "Output Image";
+            // 
+            // picOutput
+            // 
+            this.picOutput.BackColor = System.Drawing.Color.Transparent;
+            this.picOutput.ContextMenuStrip = this.menuPicOut;
+            this.picOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picOutput.Location = new System.Drawing.Point(0, 0);
+            this.picOutput.Name = "picOutput";
+            this.picOutput.Size = new System.Drawing.Size(520, 451);
+            this.picOutput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picOutput.TabIndex = 0;
+            this.picOutput.TabStop = false;
+            // 
+            // groupPanel1
+            // 
+            this.groupPanel1.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel1.Controls.Add(this.groupPanel4);
+            this.groupPanel1.Controls.Add(this.groupPanel2);
+            this.groupPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupPanel1.Location = new System.Drawing.Point(0, 0);
+            this.groupPanel1.Name = "groupPanel1";
+            this.groupPanel1.Size = new System.Drawing.Size(1105, 478);
+            // 
+            // 
+            // 
+            this.groupPanel1.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel1.Style.BackColorGradientAngle = 90;
+            this.groupPanel1.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel1.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderBottomWidth = 1;
+            this.groupPanel1.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel1.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderLeftWidth = 1;
+            this.groupPanel1.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderRightWidth = 1;
+            this.groupPanel1.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderTopWidth = 1;
+            this.groupPanel1.Style.CornerDiameter = 4;
+            this.groupPanel1.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel1.Style.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
+            this.groupPanel1.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel1.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel1.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel1.TabIndex = 3;
+            // 
+            // menuPicOut
+            // 
+            this.menuPicOut.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menu1});
+            this.menuPicOut.Name = "menuPicOut";
+            this.menuPicOut.Size = new System.Drawing.Size(153, 48);
+            this.menuPicOut.Text = "Save Image";
+            // 
+            // menu1
+            // 
+            this.menu1.Name = "menu1";
+            this.menu1.Size = new System.Drawing.Size(152, 22);
+            this.menu1.Text = "Save Image";
+            this.menu1.Click += new System.EventHandler(this.menu1_Click);
             // 
             // FrmMain
             // 
@@ -315,11 +337,12 @@
             this.Text = "Image Processing";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.groupPanel3.ResumeLayout(false);
-            this.groupPanel1.ResumeLayout(false);
-            this.groupPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picOutput)).EndInit();
             this.groupPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picInput)).EndInit();
+            this.groupPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picOutput)).EndInit();
+            this.groupPanel1.ResumeLayout(false);
+            this.menuPicOut.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -330,15 +353,18 @@
         private DevComponents.DotNetBar.ButtonX btnOK;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cmbType;
         private DevComponents.DotNetBar.ButtonX btnBrowser;
-        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel1;
-        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel4;
-        private System.Windows.Forms.PictureBox picOutput;
-        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel2;
-        private System.Windows.Forms.PictureBox picInput;
         private DevComponents.Editors.ComboItem cmbItemDefault;
         private DevComponents.Editors.ComboItem cmbIItemAverage;
         private DevComponents.Editors.ComboItem cmbItemMedian;
         private DevComponents.DotNetBar.ButtonX buttonX1;
         private DevComponents.Editors.ComboItem cmbItemSharp;
+        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel2;
+        private System.Windows.Forms.PictureBox picInput;
+        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel4;
+        private System.Windows.Forms.PictureBox picOutput;
+        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel1;
+        private System.Windows.Forms.ToolTip ttImageInfo;
+        private System.Windows.Forms.ContextMenuStrip menuPicOut;
+        private System.Windows.Forms.ToolStripMenuItem menu1;
     }
 }
