@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,19 +15,30 @@ namespace ImageProcesing
     public partial class FrmMain : Form
     {
         // CONVOLUTION ARRAY
-        const int CONV_SIZE = 3;
-        private int[] CONV_SHARP = { 0, -1, 0, -1, 5, -1, 0, -1, 0};
+        const int CONV_SIZE_3_3 = 3;
+        const int CONV_SIZE_5_5 = 5;
+        const int CONV_SIZE_7_7 = 7;
+        private int[] CONV_SHARP_3_3 = {    0, -1, 0,
+                                            -1, 5, -1,
+                                            0, -1, 0
+                                        };
+        private int[] CONV_SHARP_5_5 = {
+                                          -1, -1, -1, -1, -1,
+                                          -1,  2,  2,  2, -1,
+                                          -1,  2,  8,  2, -1,
+                                          -1,  2,  2,  2, -1,
+                                          -1, -1, -1, -1, -1,
+                                        };
         // Save image in Input image
         private Bitmap imageInput = null;
         private Bitmap imageOutput = null;
-
+        private String imagePath = "";
 
 
         public FrmMain()
         {
             InitializeComponent();
         }
-
 
         //<sumary>
         //   Open FileDialog to open image from disk
@@ -39,8 +51,9 @@ namespace ImageProcesing
             open.Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp, *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
             if (open.ShowDialog() == DialogResult.OK)
             {
-                // display image in picture box  
+                // display image in picture box
                 Bitmap bmp = new Bitmap(open.FileName);
+                imagePath = open.FileName;
                 // 
                 imageInput = bmp;
                 picInput.Image = bmp;
@@ -51,7 +64,7 @@ namespace ImageProcesing
                 //TODO
             }
         }
-        
+
 
         //<sumary>
         //   x, y : point (x,y)
@@ -59,13 +72,13 @@ namespace ImageProcesing
         //</sumary>
         private Color GetAvg(LockBitmap lbm, int x, int y, int size = 3)
         {
-            if(size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
+            if (size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
             int sumR = 0, sumG = 0, sumB = 0, sumA = 0;
-            for(int i = x  - size/2; i <= x + size/2; i++)
+            for (int i = x - size / 2; i <= x + size / 2; i++)
             {
                 for (int j = y - size / 2; j <= y + size / 2; j++)
                 {
-                    if(i >= 0 && j >= 0 && i < lbm.Width && j < lbm.Height)
+                    if (i >= 0 && j >= 0 && i < lbm.Width && j < lbm.Height)
                     {
                         sumA += (int)lbm.GetPixel(i, j).A;
                         sumR += (int)lbm.GetPixel(i, j).R;
@@ -115,6 +128,62 @@ namespace ImageProcesing
             return (lbm.Depth == 32 ? Color.FromArgb(aColor[mid], rColor[mid], gColor[mid], bColor[mid]) : Color.FromArgb(rColor[mid], gColor[mid], bColor[mid]));
         }
 
+        private Color GetMin(LockBitmap lbm, int x, int y, int size = 3)
+        {
+            Color color = new Color();
+            int minVal = 500000, tmp;
+
+            if (size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
+            for (int i = x - size / 2; i <= x + size / 2; i++)
+            {
+                for (int j = y - size / 2; j <= y + size / 2; j++)
+                {
+                    if (i >= 0 && j >= 0 && i < lbm.Width && j < lbm.Height)
+                    {
+                        tmp = lbm.GetPixel(i, j).R + lbm.GetPixel(i, j).G + lbm.GetPixel(i, j).B + lbm.GetPixel(i, j).A;
+                        if(tmp < minVal)
+                        {
+                            minVal = tmp;
+                            color = lbm.GetPixel(i, j);
+                        }
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+            }
+            return color;
+        }
+
+        private Color GetMax(LockBitmap lbm, int x, int y, int size = 3)
+        {
+            Color color = new Color();
+            int maxVal = 0, tmp;
+
+            if (size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
+            for (int i = x - size / 2; i <= x + size / 2; i++)
+            {
+                for (int j = y - size / 2; j <= y + size / 2; j++)
+                {
+                    if (i >= 0 && j >= 0 && i < lbm.Width && j < lbm.Height)
+                    {
+                        tmp = lbm.GetPixel(i, j).R + lbm.GetPixel(i, j).G + lbm.GetPixel(i, j).B + lbm.GetPixel(i, j).A;
+                        if (tmp > maxVal)
+                        {
+                            maxVal = tmp;
+                            color = lbm.GetPixel(i, j);
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            return color;
+        }
+
         private Color GetSharp(LockBitmap lbm, int x, int y, int size = 3)
         {
             if (size % 2 == 0) throw new ArgumentException("Convolution size must is odd number");
@@ -127,10 +196,23 @@ namespace ImageProcesing
                 {
                     if (i >= 0 && j >= 0 && i < lbm.Width && j < lbm.Height)
                     {
-                        A += (int)lbm.GetPixel(i, j).A * CONV_SHARP[index];
-                        R += (int)lbm.GetPixel(i, j).R * CONV_SHARP[index];
-                        G += (int)lbm.GetPixel(i, j).G * CONV_SHARP[index];
-                        B += (int)lbm.GetPixel(i, j).B * CONV_SHARP[index];
+                        if(size == 3)
+                        {
+                            A += (int)lbm.GetPixel(i, j).A * CONV_SHARP_3_3[index];
+                            R += (int)lbm.GetPixel(i, j).R * CONV_SHARP_3_3[index];
+                            G += (int)lbm.GetPixel(i, j).G * CONV_SHARP_3_3[index];
+                            B += (int)lbm.GetPixel(i, j).B * CONV_SHARP_3_3[index];
+                        }else if(size == 5)
+                        {
+                            A += (int)lbm.GetPixel(i, j).A * CONV_SHARP_5_5[index];
+                            R += (int)lbm.GetPixel(i, j).R * CONV_SHARP_5_5[index];
+                            G += (int)lbm.GetPixel(i, j).G * CONV_SHARP_5_5[index];
+                            B += (int)lbm.GetPixel(i, j).B * CONV_SHARP_5_5[index];
+                        }
+                        else
+                        {
+                            throw new System.ArgumentException("size cannot be" +size , "original");
+                        }
                     }
                     index++;
                 }
@@ -144,6 +226,7 @@ namespace ImageProcesing
             return (lbm.Depth == 32 ? Color.FromArgb(A, R, G, B) : Color.FromArgb(R, G, B));
         }
 
+        
         private Bitmap GetResult(Bitmap bmp, int type)
         {
             imageOutput = new Bitmap(imageInput.Width, imageInput.Height, imageInput.PixelFormat);
@@ -160,11 +243,11 @@ namespace ImageProcesing
             switch (type)
             {
                 case 1:
-                    for(int i = 0; i < width; i++)
+                    for (int i = 0; i < width; i++)
                     {
-                        for(int j = 0; j < height; j++)
+                        for (int j = 0; j < height; j++)
                         {
-                            lockBitmapOut.SetPixel(i, j, GetAvg(lockBitmapIn, i, j, CONV_SIZE));
+                            lockBitmapOut.SetPixel(i, j, GetAvg(lockBitmapIn, i, j, CONV_SIZE_3_3));
                         }
                     }
                     break;
@@ -173,7 +256,7 @@ namespace ImageProcesing
                     {
                         for (int j = 0; j < height; j++)
                         {
-                            lockBitmapOut.SetPixel(i, j, GetMedian(lockBitmapIn, i, j , CONV_SIZE));
+                            lockBitmapOut.SetPixel(i, j, GetAvg(lockBitmapIn, i, j, CONV_SIZE_5_5));
                         }
                     }
                     break;
@@ -182,12 +265,75 @@ namespace ImageProcesing
                     {
                         for (int j = 0; j < height; j++)
                         {
-                            lockBitmapOut.SetPixel(i, j, GetSharp(lockBitmapIn, i, j, CONV_SIZE));
+                            lockBitmapOut.SetPixel(i, j, GetMedian(lockBitmapIn, i, j, CONV_SIZE_3_3));
+                        }
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetMedian(lockBitmapIn, i, j, CONV_SIZE_5_5));
+                        }
+                    }
+                    break;
+                case 5:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetSharp(lockBitmapIn, i, j, CONV_SIZE_3_3));
+                        }
+                    }
+                    break;
+                case 6:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetSharp(lockBitmapIn, i, j, CONV_SIZE_5_5));
+                        }
+                    }
+                    break;
+                case 7:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetMax(lockBitmapIn, i, j, CONV_SIZE_3_3));
+                        }
+                    }
+                    break;
+                case 8:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetMax(lockBitmapIn, i, j, CONV_SIZE_5_5));
+                        }
+                    }
+                    break;
+                case 9:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetMin(lockBitmapIn, i, j, CONV_SIZE_3_3));
+                        }
+                    }
+                    break;
+                case 10:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            lockBitmapOut.SetPixel(i, j, GetMin(lockBitmapIn, i, j, CONV_SIZE_5_5));
                         }
                     }
                     break;
                 default:
-                    MessageBox.Show("Selection filter option, pls!", "Oops!!!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Hãy chọn một bộ lọc!, pls");
                     lockBitmapIn.UnlockBits();
                     lockBitmapOut.UnlockBits();
                     return null;
@@ -201,8 +347,13 @@ namespace ImageProcesing
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            if (imageInput == null)
+            {
+                MessageBox.Show("Chọn ảnh trước, pls!!!");
+                return;
+            }
             Bitmap result = GetResult((Bitmap)picInput.Image, cmbType.SelectedIndex);
-            if(imageInput != null && result != null)
+            if (imageInput != null && result != null)
             {
                 picOutput.Image = result;
                 picOutput.Refresh();
@@ -218,18 +369,18 @@ namespace ImageProcesing
         {
             if (imageInput != null)
             {
-                string s = "Display size: " + picInput.Width + " x " + picInput.Height +
+                string s = "Dimensions: " + imageInput.Width + " x " + imageInput.Height +
                 "\nBit depth: " + imageInput.PixelFormat +
-                "\nDimensions: " + imageInput.Width + " x " + imageInput.Height +
-                "\nBit depth: " + Bitmap.GetPixelFormatSize(imageInput.PixelFormat);
+                "\nSize: " + (new System.IO.FileInfo(imagePath).Length) + " Bytes" +
+                "\nPath: " + imagePath;
                 ttImageInfo.Show(s, picInput);
             }
-                 
+
         }
 
         private void menu1_Click(object sender, EventArgs e)
         {
-            if(picOutput.Image != null)
+            if (imageOutput != null)
             {
                 try
                 {
@@ -247,5 +398,49 @@ namespace ImageProcesing
                 }
             }
         }
+
+        private void btnSaveImage_Click(object sender, EventArgs e)
+        {
+            if (picOutput.Image != null)
+            {
+                try
+                {
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.DefaultExt = "jpg";
+                    sfd.Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp, *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png|All files (*.*)|*.*";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        imageOutput.Save(sfd.FileName);
+                        MessageBox.Show("Lưu thành công tại " + sfd.FileName);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Lưu không thành công");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Không có ảnh để lưu, xử lí ảnh trước, pls!!!");
+            }
+        }
+
+        private void btnInfo_Click(object sender, EventArgs e)
+        {
+            if (imageInput != null)
+            {
+                string s = "Dimensions: " + imageInput.Width + " x " + imageInput.Height +
+                "\nBit depth: " + imageInput.PixelFormat +
+                "\nSize: " + (new System.IO.FileInfo(imagePath).Length) + " Bytes" +
+                "\nPath: " + imagePath;
+                MessageBox.Show(s);
+            }
+            else
+            {
+                MessageBox.Show("Hãy chọn ảnh trước, pls!!!");
+            }
+        }
+
+
     }
 }

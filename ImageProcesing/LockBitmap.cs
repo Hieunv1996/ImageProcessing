@@ -50,8 +50,8 @@ namespace ImageProcesing
                 bitmapData = source.LockBits(rect, ImageLockMode.ReadWrite, source.PixelFormat);
                 // get total locked pixels count
                 int PixelCount = bitmapData.Stride * Height;
-                // create byte array to copy pixel values
 
+                // create byte array to copy pixel values
                 Pixels = new byte[PixelCount];
                 Iptr = bitmapData.Scan0;
 
@@ -97,7 +97,7 @@ namespace ImageProcesing
             int cCount = Depth / 8;
 
             // Get start index of the specified pixel
-            int i = (y * bitmapData.Stride) + x * cCount;
+            int i = (y * bitmapData.Stride) + (x * cCount);
 
             if (i > Pixels.Length - cCount)
                 throw new IndexOutOfRangeException();
