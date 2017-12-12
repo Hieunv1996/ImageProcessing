@@ -333,7 +333,7 @@ namespace ImageProcesing
                     }
                     break;
                 default:
-                    MessageBox.Show("Hãy chọn một bộ lọc!, pls");
+                    MessageBox.Show("Hãy chọn một bộ lọc!, pls","Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     lockBitmapIn.UnlockBits();
                     lockBitmapOut.UnlockBits();
                     return null;
@@ -349,7 +349,7 @@ namespace ImageProcesing
         {
             if (imageInput == null)
             {
-                MessageBox.Show("Chọn ảnh trước, pls!!!");
+                MessageBox.Show("Chọn ảnh trước, pls!!!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             Bitmap result = GetResult((Bitmap)picInput.Image, cmbType.SelectedIndex);
@@ -411,17 +411,17 @@ namespace ImageProcesing
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         imageOutput.Save(sfd.FileName);
-                        MessageBox.Show("Lưu thành công tại " + sfd.FileName);
+                        MessageBox.Show("Lưu thành công tại " + sfd.FileName, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Lưu không thành công");
+                    MessageBox.Show("Lưu không thành công","Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Không có ảnh để lưu, xử lí ảnh trước, pls!!!");
+                MessageBox.Show("Không có ảnh để lưu, xử lí ảnh trước, pls!!!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -433,7 +433,7 @@ namespace ImageProcesing
                 "\nBit depth: " + imageInput.PixelFormat +
                 "\nSize: " + (new System.IO.FileInfo(imagePath).Length) + " Bytes" +
                 "\nPath: " + imagePath;
-                MessageBox.Show(s);
+                MessageBox.Show(s, "Thông tin ảnh", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
